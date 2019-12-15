@@ -26,7 +26,8 @@ public class ListaNumeros
         if (n > TAM_LISTA) {
             throw new IllegalArgumentException("Valor no permitido para tamaño lista");
         }
-        // completar
+        numeros = new int[n];
+        pos=0;
     }
 
     /**
@@ -38,7 +39,16 @@ public class ListaNumeros
      */
     public boolean addElemento(int numero)
     {
-        
+        boolean sePuede = false;
+        if(pos <= numeros.length){
+        int i = 0;
+        while(numero != numeros[i]){
+        numeros[pos]= numero;
+        pos++;
+        i++;
+        sePuede=true;
+        }
+    }
         return true;
 
     }
@@ -48,7 +58,7 @@ public class ListaNumeros
      */
     public boolean estaCompleta()
     {
-        return true;
+        return pos == numeros.length -1;
 
     }
 
@@ -57,7 +67,7 @@ public class ListaNumeros
      */
     public boolean estaVacia() 
     {
-        return true;
+        return pos == 0 && (numeros[pos]== 0);
 
     }
 
@@ -66,7 +76,11 @@ public class ListaNumeros
      */
     public int getTotalNumeros()
     {
-        return 0;
+        int contador = 0;
+        for(int i = numeros.length -1;numeros[i] != 0;i--){
+        contador++;
+        }
+        return contador;
 
     }
 
@@ -75,7 +89,11 @@ public class ListaNumeros
      */
     public void vaciarLista() 
     {
-        
+       int i = numeros.length - 1;
+       while(i != 0){
+        numeros[i] = 0;
+        i--;
+        }
     }
 
     /**
@@ -85,6 +103,11 @@ public class ListaNumeros
     public boolean estaElemento(int numero) 
     {
         
+        for(int i = numeros.length -1;i > 0;i--){
+         if(numeros[i] == numero){
+             return true;
+        }
+    }
         return false;
     }
 
