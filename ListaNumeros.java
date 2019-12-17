@@ -3,7 +3,7 @@
  * La clase encapsula en un array
  * una lista de numeros
  * 
- * @author - 
+ * @author - Antonio Nieto 
  * 
  */
 import java.util.Arrays;
@@ -39,18 +39,12 @@ public class ListaNumeros
      */
     public boolean addElemento(int numero)
     {
-        boolean sePuede = false;
-        if(pos <= numeros.length){
-        int i = 0;
-        while(numero != numeros[i]){
-        numeros[pos]= numero;
-        pos++;
-        i++;
-        sePuede=true;
+        if(estaCompleta() || estaElemento(numero)){
+            return false;
         }
-    }
+        numeros[pos] = numero;
+        pos++;
         return true;
-
     }
 
     /**
@@ -58,7 +52,7 @@ public class ListaNumeros
      */
     public boolean estaCompleta()
     {
-        return pos == numeros.length -1;
+        return pos == numeros.length;
 
     }
 
@@ -76,12 +70,7 @@ public class ListaNumeros
      */
     public int getTotalNumeros()
     {
-        int contador = 0;
-        for(int i = numeros.length -1;numeros[i] != 0;i--){
-        contador++;
-        }
-        return contador;
-
+        return pos;
     }
 
     /**
@@ -89,11 +78,7 @@ public class ListaNumeros
      */
     public void vaciarLista() 
     {
-       int i = numeros.length - 1;
-       while(i != 0){
-        numeros[i] = 0;
-        i--;
-        }
+        pos = 0;
     }
 
     /**
@@ -102,12 +87,12 @@ public class ListaNumeros
      */
     public boolean estaElemento(int numero) 
     {
-        
+
         for(int i = numeros.length -1;i > 0;i--){
-         if(numeros[i] == numero){
-             return true;
+            if(numeros[i] == numero){
+                return true;
+            }
         }
-    }
         return false;
     }
 
@@ -120,8 +105,14 @@ public class ListaNumeros
      */
     public String toString() 
     {
-        
-        return null;
+        String lineaFormateada = "| ";
+        for(int i = 0;i < pos;i++){
+            lineaFormateada +=numeros[i] + " | ";
+        }
+        if(estaVacia()){
+            lineaFormateada+="|";}
+        lineaFormateada = lineaFormateada +"\n";
+        return lineaFormateada;
     }
 
     /**
@@ -145,9 +136,19 @@ public class ListaNumeros
      * (ver detalles en el enunciado)
      */
     public int[] expandir() {
-         
-
-        return null;
+        if(esImpar(pos)){
+            throw new RuntimeException("Nº impar de elementos en el array, añada uno mas");}
+        int lon = 0;
+        for(int i = 0;i<pos;i+=2){
+            lon +=numeros[i];
+        }
+        int[]expandido = new int[lon];
+        int f = 0;
+        for(int i = 0; i< pos;i +=2){
+            for(int k=1;k<=numeros[i];k++){
+                expandido[f] = numeros[i+1];
+                f++;}}
+        return expandido;
     }
 
     /**
@@ -168,11 +169,20 @@ public class ListaNumeros
      *  después de reorganizarParesImpares() quedaría {4, 2, 8, 3, 7, 9, 5, 11, 13}
      */
     public void reorganizarParesImpares() {
-         
-
+        int impar = 0;
+        int i = 0;
+        while(i < pos - impar){
+            int auxiliar = numeros[i];
+            if(esImpar(auxiliar)){
+                impar++;
+                for(int f = i + 1; f < pos;f++){
+                    numeros[f-1]=numeros[f];
+                }
+                numeros[pos -1]= auxiliar;}
+            i++;
+        }
     }
 
-     
     /**
      *  Usando métodos de la clase Arrays haz una copia 
      *  de numeros al tamaño indicado por su longitud lógica
@@ -181,9 +191,12 @@ public class ListaNumeros
      *  que incluya los elementos del array ordenado
      */
     public ListaNumeros nuevaLista() {
-         
-        return null;
-
+        int []nuevoArray = Arrays.copyOf(numeros,pos);
+        Arrays.sort(nuevoArray);
+        ListaNumeros nueva = new ListaNumeros(nuevoArray.length);
+        for(int i = 0; i < nuevoArray.length;i++){
+            nueva.addElemento(nuevoArray[i]);}
+        return nueva;
     }
 
     /**
@@ -199,8 +212,12 @@ public class ListaNumeros
      */
     public int[][] toArray2D() 
     {
-        
-        return null;
+        int[][] array2D = new int[4][4];
+        for(int i = 0; i < pos;i++){
+            int f= i/4;
+            int j = i %4;
+            array2D[f][j]=numeros[i];}
+        return array2D;
     }
 
     /**
@@ -218,13 +235,11 @@ public class ListaNumeros
         numeros.addElemento(5);
         numeros.addElemento(8);
         numeros.addElemento(11);
-
+        System.out.println(numeros.toArray2D());
         System.out.println("Original: " + numeros.toString());
         int[] expandido = numeros.expandir();
         System.out.println("Expandido: " + Arrays.toString(expandido));
         // seguir completando
-        
-        
-        
+
     }
 }
