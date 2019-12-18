@@ -240,6 +240,6 @@ public class ListaNumeros
         int[] expandido = numeros.expandir();
         System.out.println("Expandido: " + Arrays.toString(expandido));
         // seguir completando
-
+        //no esta completado por el hecho de que me di cuenta tarde de que estaba este metodo
     }
 }
